@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import SnippetCard from "./SnippetCard";
+import { fetchSnippets } from "../lib/actions";
 
 type Props = {};
 
@@ -15,7 +16,8 @@ const SnippetCardList = () => {
   );
 };
 
-const Feed = (props: Props) => {
+const Feed = async(props: Props) => {
+
     let timeoutId: undefined | ReturnType<typeof setTimeout>;
 
     const [searchText, setSearchText] = useState("");

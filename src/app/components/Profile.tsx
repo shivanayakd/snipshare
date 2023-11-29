@@ -1,9 +1,14 @@
 import React from 'react'
 import SnippetCard from './SnippetCard';
+import { fetchSnippets } from '../lib/actions';
 
 type Props = {}
 
-const Profile = (props: Props) => {
+const Profile = async (props: Props) => {
+  
+  const data = await fetchSnippets();
+  console.log("🚀 ~ file: Profile.tsx:10 ~ Profile ~ data:", data)
+  
   return (
     <section className="w-full">
       <h1 className="head_text text-left">
