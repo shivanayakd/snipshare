@@ -15,7 +15,7 @@ const handler = NextAuth({
     async session({ session, user }) {
       const localuser = await fetchUser(user?.email);
       if (session.user) {
-        session.user.id = localuser?.id;
+        session.user.id = localuser?.id ?? "";
       }
       return session;
     },

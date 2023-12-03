@@ -27,7 +27,7 @@ export async function createSnippet({
       data: {
         title,
         content,
-        private: isprivate,
+        private: isprivate === "on",
         tag,
         authorId,
       },
