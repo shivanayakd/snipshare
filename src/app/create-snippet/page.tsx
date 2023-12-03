@@ -4,11 +4,8 @@ import React from "react";
 import Form from "../components/Form";
 import { createSnippet } from "../lib/actions";
 import { useSession } from "next-auth/react";
-import { revalidatePath } from "next/cache";
 
-type Props = {};
-
-const page = (props: Props) => {
+const page = () => {
   const { data: session } = useSession();
 
   const handleCreateSnippet = async (data: FormData) => {
@@ -17,14 +14,13 @@ const page = (props: Props) => {
     const tag = data.get("tag")?.valueOf();
     const isprivate = data.get("private")?.valueOf();
 
-      await createSnippet({
-        title,
-        content,
-        isprivate,
-        tag,
-        authorId: session?.user?.id,
-      });
-
+    await createSnippet({
+      title,
+      content,
+      isprivate,
+      tag,
+      authorId: session?.user?.id,
+    });
   };
 
   return <Form handleCreate={handleCreateSnippet} />;

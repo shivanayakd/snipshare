@@ -45,7 +45,7 @@ const Nav = (props: Props) => {
 
             <Link href="/profile">
               <Image
-                src={session?.user.image as string}
+                src={session?.user?.image as string}
                 width={37}
                 height={37}
                 className="rounded-full"
