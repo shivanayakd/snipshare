@@ -4,6 +4,7 @@ import "./styles/globals.css";
 
 import Nav from "./components/Nav";
 import Footer from "./components/Footer";
+import Provider from "./components/provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,13 +24,15 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
       <body className={`${inter.className}`}>
-        <div className="w-full bg-gradient-to-br from-indigo-50 via-white to-cyan-100">
-          <div className="container mx-auto p-5 ">
-            <Nav />
-            <div className="pt-8">{children}</div>
-            <Footer />
+        <Provider>
+          <div className="w-full bg-gradient-to-br from-indigo-50 via-white to-cyan-100">
+            <div className="container mx-auto p-5 ">
+              <Nav />
+              <div className="pt-8">{children}</div>
+              <Footer />
+            </div>
           </div>
-        </div>
+        </Provider>
       </body>
     </html>
   );

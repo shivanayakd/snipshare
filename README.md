@@ -41,10 +41,17 @@ Save and Share Code snippets at ease
 
 ## TODO 
 
-- Form Validation
-- Debouncing
+- Search Capability
+- Click on code snippet open pop from right - https://tailwindui.com/components/preview#:~:text=With%20close%20button,Requires%20JS
+- Update/Edit the Snippet
+- Filter based on Private/Public in profile
+- Remove the extra layer of Google Signin Screen
 - Error Handling
+- Form Validation
+- Create Types and optmize usage of Typescript
 - Data Streeming & Suspence
+- Debouncing
 - Logging
 - App Monitoring
+- Fix 404 page
 

@@ -11,22 +11,25 @@ datasource db {
 }
 
 model Snippet {
-    id        String  @id @default(cuid())
-    title     String
-    content   String?
-    private   Boolean @default(true)
-    author    User?   @relation(fields: [authorId], references: [id])
-    authorId  String?
-    tag       String?
+    id       String  @id @default(cuid())
+    title    String
+    content  String?
+    private  Boolean @default(true)
+    author   User?   @relation(fields: [authorId], references: [id])
+    authorId String?
+    tag      String?
+
     @@map(name: "Snippets")
 }
 
 model User {
     id        String    @id @default(cuid())
-    username  String?
-    email     String?   @unique
+    username  String
+    image     String
+    email     String    @unique
     createdAt DateTime  @default(now()) @map(name: "created_at")
     updatedAt DateTime  @updatedAt @map(name: "updated_at")
     posts     Snippet[]
+
     @@map(name: "users")
 }

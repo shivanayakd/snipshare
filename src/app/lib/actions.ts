@@ -1,18 +1,65 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import prisma from "./prisma";
+import { redirect } from "next/navigation";
 
 export async function fetchSnippets() {
-  const feed = await prisma.snippet.findMany({
+  return await prisma.snippet.findMany({
     where: { private: true },
     include: {
       author: {
-        select: { username: true },
+        select: { username: true , image: true, email: true},
       },
     },
   });
-  return {
-    props: { feed },
-    revalidate: 10,
-  };
+}
+
+export async function createSnippet({
+  title,
+  content,
+  isprivate,
+  tag,
+  authorId,
+}: any) {
+  try {
+    return await prisma.snippet.create({
+      data: {
+        title,
+        content,
+        private: isprivate,
+        tag,
+        authorId,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  } finally {
+    //TODO : Revalidate the User Profile page with updated posts
+    revalidatePath("/");
+    redirect("/");
+  }
+}
+
+export async function createUser({ name, email, image }: any) {
+  const exisingUser = await fetchUser(email);
+
+  if (!exisingUser) {
+    return await prisma.user.create({
+      data: {
+        username: name,
+        email,
+        image,
+      },
+    });
+  }
+  return;
+}
+
+export async function fetchUser(email: string) {
+  return await prisma.user.findFirst({
+    where: {
+      email: email,
+    },
+  });
 }

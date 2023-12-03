@@ -1,5 +1,6 @@
 "use client";
 
+import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -7,9 +8,8 @@ import React, { useState } from "react";
 type Props = {};
 
 const Nav = (props: Props) => {
+  const { data: session } = useSession();
   const [toggleDropdown, setToggleDropdown] = useState(false);
-
-  const signOut = () => {};
 
   return (
     <nav className="flex items-center justify-between w-full">
@@ -27,68 +27,98 @@ const Nav = (props: Props) => {
       {/* Desktop Nav */}
 
       <div className="sm:flex hidden">
-        <div className="flex gap-3 md:gap-5">
-          <Link href="/create-snippet" className="black_btn">
-            Add Snippet
-          </Link>
+        {session && session?.user ? (
+          <div className="flex gap-3 md:gap-5">
+            <Link href="/create-snippet" className="black_btn">
+              Add Snippet
+            </Link>
 
-          <button type="button" onClick={signOut} className="outline_btn">
-            Sign Out
+            <button
+              type="button"
+              onClick={() => {
+                signOut();
+              }}
+              className="outline_btn"
+            >
+              Sign Out
+            </button>
+
+            <Link href="/profile">
+              <Image
+                src={session?.user.image as string}
+                width={37}
+                height={37}
+                className="rounded-full"
+                alt="profile"
+              />
+            </Link>
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={() => {
+              signIn();
+            }}
+            className="black_btn"
+          >
+            Sign in
           </button>
-
-          <Link href="/profile">
-            <Image
-              src="/assets/images/snippet_share_logo.png"
-              width={37}
-              height={37}
-              className="rounded-full"
-              alt="profile"
-            />
-          </Link>
-        </div>
+        )}
       </div>
 
       {/* Mobile Nav */}
       <div className="sm:hidden flex relative">
-        <div className="flex">
-          <Image
-            src="/assets/images/snippet_share_logo.png"
-            width={37}
-            height={37}
-            className="rounded-full"
-            alt="profile"
-            onClick={() => setToggleDropdown(!toggleDropdown)}
-          />
+        {session && session?.user ? (
+          <div className="flex">
+            <Image
+              src={session?.user.image as string}
+              width={37}
+              height={37}
+              className="rounded-full"
+              alt="profile"
+              onClick={() => setToggleDropdown(!toggleDropdown)}
+            />
 
-          {toggleDropdown && (
-            <div className="dropdown">
-              <Link
-                href="/profile"
-                className="dropdown_link"
-                onClick={() => setToggleDropdown(false)}
-              >
-                My Profile
-              </Link>
-              <Link
-                href="/create-snippet"
-                className="dropdown_link"
-                onClick={() => setToggleDropdown(false)}
-              >
-                Create Prompt
-              </Link>
-              <button
-                type="button"
-                onClick={() => {
-                  setToggleDropdown(false);
-                  signOut();
-                }}
-                className="mt-5 w-full black_btn"
-              >
-                Sign Out
-              </button>
-            </div>
-          )}
-        </div>
+            {toggleDropdown && (
+              <div className="dropdown">
+                <Link
+                  href="/profile"
+                  className="dropdown_link"
+                  onClick={() => setToggleDropdown(false)}
+                >
+                  My Profile
+                </Link>
+                <Link
+                  href="/create-snippet"
+                  className="dropdown_link"
+                  onClick={() => setToggleDropdown(false)}
+                >
+                  Create snippet
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setToggleDropdown(false);
+                    signOut();
+                  }}
+                  className="mt-5 w-full black_btn"
+                >
+                  Sign Out
+                </button>
+              </div>
+            )}
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={() => {
+              signIn();
+            }}
+            className="black_btn"
+          >
+            Sign in
+          </button>
+        )}
       </div>
     </nav>
   );
