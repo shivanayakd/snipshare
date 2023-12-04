@@ -1,12 +1,11 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import prisma from "./prisma";
 import { redirect } from "next/navigation";
 
 export async function fetchSnippets() {
   return await prisma.snippet.findMany({
-    where: { private: true },
+    // where: { private: true }, // use this for peofile
     include: {
       author: {
         select: { username: true , image: true, email: true},
@@ -36,7 +35,7 @@ export async function createSnippet({
     console.log(error);
   } finally {
     //TODO : Revalidate the User Profile page with updated posts
-    revalidatePath("/");
+    // revalidatePath("/");
     redirect("/");
   }
 }
